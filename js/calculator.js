@@ -168,6 +168,23 @@ let subjects = [];
             subjects.push(subject);
             renderSubjects();
             document.getElementById('subjectName').value = '';
+            // ... existing subject creation code ...
+
+            // Save to localStorage under userData
+            const userData = JSON.parse(localStorage.getItem('userData')) || {
+                currentUser: JSON.parse(localStorage.getItem('userData')).currentUser,
+                subjects: [],
+                studentMarks: [],
+                friends: [],
+                rankings: { class: [], batch: [], program: [] }
+            };
+            
+            userData.subjects.push(subject);
+            localStorage.setItem('userData', JSON.stringify(userData));
+            
+            // Redirect back to dashboard
+            //window.location.href = 'dashboard.html';
+
         }
 
         function renderSubjects() {
@@ -278,6 +295,11 @@ let subjects = [];
                     <div class="result">
                         Current Grade: <span class="grade">${grade} (${gradePoint})</span>
                     </div>
+                    
+                    <!-- Add Save Marks button -->
+                    <div class="subject-actions">
+                        <button onclick="saveSubject(${subject.id})" class="save-btn">Save Marks</button>
+                    </div>
                 `;
 
                 subjectDiv.innerHTML = html;
@@ -362,21 +384,80 @@ let subjects = [];
             }
         }
 
-        // Initialize the page
-        document.addEventListener('DOMContentLoaded', function () {
-            toggleAssessmentOptions();
+//         // Initialize the page
+//         document.addEventListener('DOMContentLoaded', function () {
+//             toggleAssessmentOptions();
 
-            // Add event listeners for component checkboxes
-            const theoryCheckboxes = document.querySelectorAll('input[name="theoryComponents"]');
-            theoryCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', updateTheoryComponents);
-            });
+//             // Add event listeners for component checkboxes
+//             const theoryCheckboxes = document.querySelectorAll('input[name="theoryComponents"]');
+//             theoryCheckboxes.forEach(checkbox => {
+//                 checkbox.addEventListener('change', updateTheoryComponents);
+//             });
 
-            const labCheckboxes = document.querySelectorAll('input[name="labComponents"]');
-            labCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', updateLabComponents);
-            });
-        });
+//             const labCheckboxes = document.querySelectorAll('input[name="labComponents"]');
+//             labCheckboxes.forEach(checkbox => {
+//                 checkbox.addEventListener('change', updateLabComponents);
+//             });
+//         });
+// document.addEventListener('DOMContentLoaded', function() {
+//     // All your calculator code here
+// });
+
+function saveSubject(subjectId) {
+    const subject = subjects.find(s => s.id === subjectId);
+    if (!subject) return;
+
+    // Load current user data
+    const userData = JSON.parse(localStorage.getItem('userData')) || {
+        currentUser: JSON.parse(localStorage.getItem('userData')).currentUser,
+        subjects: [],
+        studentMarks: [],
+        friends: [],
+        rankings: { class: [], batch: [], program: [] }
+    };
+
+    // Find and update the subject in userData
+    const existingSubjectIndex = userData.subjects.findIndex(s => s.id === subjectId);
+    if (existingSubjectIndex >= 0) {
+        // Update existing subject
+        userData.subjects[existingSubjectIndex] = subject;
+    } else {
+        // Add new subject
+        userData.subjects.push(subject);
+    }
+
+    // Save back to localStorage
+    localStorage.setItem('userData', JSON.stringify(userData));
+    
+    // Show confirmation
+    alert('Marks saved successfully!');
+    
+    // Optional: Redirect to dashboard
+    // window.location.href = 'dashboard.html';
+}
+
+
+
+// Initialize the page - move this to the bottom of the file
 document.addEventListener('DOMContentLoaded', function() {
-    // All your calculator code here
+    toggleAssessmentOptions();
+    
+    // Load any existing subjects
+    const savedData = localStorage.getItem('userData');
+    if (savedData) {
+        const userData = JSON.parse(savedData);
+        subjects = userData.subjects || [];
+        renderSubjects();
+    }
+
+    // Add event listeners for component checkboxes
+    const theoryCheckboxes = document.querySelectorAll('input[name="theoryComponents"]');
+    theoryCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateTheoryComponents);
+    });
+
+    const labCheckboxes = document.querySelectorAll('input[name="labComponents"]');
+    labCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateLabComponents);
+    });
 });

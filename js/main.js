@@ -77,34 +77,55 @@ function handleLoginPage() {
 
 // ==================== DASHBOARD PAGE ====================
 function handleDashboardPage() {
-    // Check login
+    // Check login first
     if (!localStorage.getItem('loggedIn')) {
         window.location.href = 'index.html';
         return;
     }
     
-    // Load data
-    loadUserData();
+    // Load fresh data from localStorage
+    const savedData = localStorage.getItem('userData');
+    if (savedData) {
+        try {
+            Object.assign(userData, JSON.parse(savedData));
+        } catch (e) {
+            console.error("Error parsing user data:", e);
+        }
+    }
     
-    // Set up UI
+    // Setup UI and load content
     setupDashboardUI();
-    
-    // Load content
     loadDashboardContent();
 }
 
 function loadUserData() {
-    const savedData = localStorage.getItem('userData');
-    if (savedData) {
-        Object.assign(userData, JSON.parse(savedData));
+    try {
+        const savedData = localStorage.getItem('userData');
+        if (savedData) {
+            const parsed = JSON.parse(savedData);
+            Object.assign(userData, parsed);
+            
+            // Initialize any missing arrays
+            userData.subjects = userData.subjects || [];
+            userData.studentMarks = userData.studentMarks || [];
+        }
+    } catch (e) {
+        console.error("Error loading user data:", e);
+        // Initialize fresh data
+        userData.subjects = [];
+        userData.studentMarks = [];
     }
+    // const savedData = localStorage.getItem('userData');
+    // if (savedData) {
+    //     Object.assign(userData, JSON.parse(savedData));
+    // }
     
-    // Load marks from old system if exists
-    const oldMarks = JSON.parse(localStorage.getItem('studentMarks') || '[]');
-    if (oldMarks.length > 0) {
-        userData.studentMarks = oldMarks;
-        localStorage.removeItem('studentMarks');
-    }
+    // // Load marks from old system if exists
+    // const oldMarks = JSON.parse(localStorage.getItem('studentMarks') || '[]');
+    // if (oldMarks.length > 0) {
+    //     userData.studentMarks = oldMarks;
+    //     localStorage.removeItem('studentMarks');
+    // }
 }
 
 function setupDashboardUI() {
@@ -138,10 +159,22 @@ function setupDashboardUI() {
             window.location.href = 'leaderboard.html';
         });
     }
+    // Change this in setupDashboardUI():
+    const addSubjectBtn = document.getElementById('add-subject-btn');
+    if (addSubjectBtn) {
+        addSubjectBtn.addEventListener('click', function() {
+            window.location.href = 'calculator.html';
+        });
+    }
 }
 
 function loadDashboardContent() {
     // Load marks data
+    // Ensure we have fresh data
+    const savedData = localStorage.getItem('userData');
+    if (savedData) {
+        Object.assign(userData, JSON.parse(savedData));
+    }
     if (userData.studentMarks.length > 0) {
         loadMarksData();
     }
@@ -153,6 +186,7 @@ function loadDashboardContent() {
     
     // Update rankings
     updateRankings();
+    checkForNewSubjects();
 }
 
 function loadMarksData() {
@@ -178,12 +212,24 @@ function loadSubjectGrades() {
     const gradesContainer = document.getElementById('grades-container');
     if (!gradesContainer) return;
     
+    // Clear existing content
     gradesContainer.innerHTML = '';
     
+    // Check if we have subjects to display
+    if (!userData.subjects || userData.subjects.length === 0) {
+        gradesContainer.innerHTML = '<p>No subjects added yet. Use the calculator to add subjects.</p>';
+        return;
+    }
+    
+    // Create grade cards for each subject
     userData.subjects.forEach(subject => {
-        const totalWeighted = subject.assessments.reduce((sum, a) => 
-            sum + (a.marksObtained / a.maxMarks) * a.weightage, 0);
+        // Calculate total weighted score
+        const totalWeighted = subject.assessments.reduce((sum, assessment) => {
+            const marks = assessment.marks || 0;
+            return sum + (marks / assessment.maxMarks) * assessment.weightage;
+        }, 0);
         
+        // Create the grade card element
         const gradeCard = document.createElement('div');
         gradeCard.className = 'grade-card';
         gradeCard.innerHTML = `
@@ -193,7 +239,12 @@ function loadSubjectGrades() {
             </div>
             <p class="grade-score">${totalWeighted.toFixed(2)}%</p>
             <p class="grade-letter">${calculateGrade(subject, totalWeighted)}</p>
+            <div class="subject-details">
+                <p>Type: ${subject.type === 'theory' ? 'Theory' : 'Lab'}</p>
+                <p>Credits: ${subject.credit}</p>
+            </div>
         `;
+        
         gradesContainer.appendChild(gradeCard);
     });
 }
@@ -379,4 +430,18 @@ function getGradeLetter(percentage) {
     if (percentage >= 70) return 'C';
     if (percentage >= 60) return 'D';
     return 'F';
+}
+function checkForNewSubjects() {
+    const calculatorSubjects = JSON.parse(localStorage.getItem('calculatorSubjects')) || [];
+    if (calculatorSubjects.length > 0) {
+        // Merge new subjects with existing ones
+        userData.subjects = [...userData.subjects, ...calculatorSubjects];
+        localStorage.setItem('userData', JSON.stringify(userData));
+        
+        // Clear the temporary storage
+        localStorage.removeItem('calculatorSubjects');
+        
+        // Refresh the display
+        loadSubjectGrades();
+    }
 }
