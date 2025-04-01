@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Grade Calculator</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/calculator.css">
+</head>
+
+<body>
+    <header class="calculator-header">
+        <a href="dashboard.html" class="back-btn">← Back to Dashboard</a>
+        <h1>Grade Calculator</h1>
+    </header>
+    <div class="container">
+        <h1>Student Grade Calculator</h1>
+
+        <div class="subject-form">
+            <h2>Add New Subject</h2>
+            <div class="flex-container">
+                <div class="flex-item">
+                    <label for="subjectName">Subject Name:</label>
+                    <input type="text" id="subjectName" required>
+                </div>
+                <div class="flex-item">
+                    <label for="subjectType">Subject Type:</label>
+                    <select id="subjectType" onchange="toggleAssessmentOptions()">
+                        <option value="theory">Theory</option>
+                        <option value="lab">Lab</option>
+                    </select>
+                </div>
+                <div class="flex-item">
+                    <label for="subjectCredit">Credits:</label>
+                    <input type="number" id="subjectCredit" min="1" max="10" value="3" required>
+                </div>
+            </div>
+
+            <div id="theoryOptions" class="theory-options">
+                <h3>Theory Assessment Components</h3>
+                <p>Fixed components: CAT1 (15%), CAT2 (15%), FAT (40%)</p>
+                <p>Select additional components to make up remaining 30%:</p>
+
+                <div class="component-controls">
+                    <div>
+                        <input type="checkbox" id="theoryAssignment" name="theoryComponents" value="assignment"
+                            onchange="updateTheoryComponents()">
+                        <label for="theoryAssignment">Assignment</label>
+                        <input type="number" id="theoryAssignmentCount" min="1" max="5" value="1" style="width: 50px;"
+                            onchange="updateTheoryComponents()" disabled>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="theoryDigital" name="theoryComponents" value="digital"
+                            onchange="updateTheoryComponents()">
+                        <label for="theoryDigital">Digital Assignment</label>
+                        <input type="number" id="theoryDigitalCount" min="1" max="5" value="1" style="width: 50px;"
+                            onchange="updateTheoryComponents()" disabled>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="theoryQuiz" name="theoryComponents" value="quiz"
+                            onchange="updateTheoryComponents()">
+                        <label for="theoryQuiz">Quiz</label>
+                        <input type="number" id="theoryQuizCount" min="1" max="5" value="1" style="width: 50px;"
+                            onchange="updateTheoryComponents()" disabled>
+                    </div>
+                </div>
+
+                <div id="theoryWeightInfo" style="margin-top: 10px;"></div>
+
+                <div class="flex-container" style="margin-top: 15px;">
+                    <div class="flex-item">
+                        <label for="classAverage">Estimated Class Average (for grade calculation):</label>
+                        <input type="number" id="classAverage" min="0" max="100" value="60">
+                    </div>
+                    <div class="flex-item">
+                        <label for="stdDev">Estimated Standard Deviation:</label>
+                        <input type="number" id="stdDev" min="1" max="20" value="10">
+                    </div>
+                </div>
+            </div>
+
+            <div id="labOptions" class="lab-options">
+                <h3>Lab Assessment Components</h3>
+                <p>Fixed component: FAT (40%)</p>
+                <p>Select additional components to make up remaining 60%:</p>
+
+                <div class="component-controls">
+                    <div>
+                        <input type="checkbox" id="labAssignment" name="labComponents" value="assignment"
+                            onchange="updateLabComponents()">
+                        <label for="labAssignment">Assignment</label>
+                        <input type="number" id="labAssignmentCount" min="1" max="5" value="1" style="width: 50px;"
+                            onchange="updateLabComponents()" disabled>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="labDigital" name="labComponents" value="digital"
+                            onchange="updateLabComponents()">
+                        <label for="labDigital">Digital Assignment</label>
+                        <input type="number" id="labDigitalCount" min="1" max="5" value="1" style="width: 50px;"
+                            onchange="updateLabComponents()" disabled>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="labQuiz" name="labComponents" value="quiz"
+                            onchange="updateLabComponents()">
+                        <label for="labQuiz">Quiz</label>
+                        <input type="number" id="labQuizCount" min="1" max="5" value="1" style="width: 50px;"
+                            onchange="updateLabComponents()" disabled>
+                    </div>
+                </div>
+
+                <div id="labWeightInfo" style="margin-top: 10px;"></div>
+            </div>
+
+            <button onclick="addSubject()">Add Subject</button>
+        </div>
+
+        <div class="subject-list" id="subjectList">
+            <h2>Your Subjects</h2>
+            <div id="subjectsContainer"></div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/calculator.js"></script>
+</body>
+
+</html>

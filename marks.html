@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Marks</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="marks-form-container">
+        <header class="form-header">
+            <h1>Add New Marks</h1>
+            <a href="dashboard.html" class="back-btn">Back to Dashboard</a>
+        </header>
+
+        <form id="marks-form">
+            <div class="form-group">
+                <label for="subject">Subject</label>
+                <select id="subject" required>
+                    <option value="">Select Subject</option>
+                    <option value="differential">Differential</option>
+                    <option value="physics">Physics</option>
+                    <option value="english">Technical English</option>
+                    <option value="web">Web Programming</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="assessment-type">Assessment Type</label>
+                <select id="assessment-type" required>
+                    <option value="">Select Type</option>
+                    <option value="quiz">Quiz</option>
+                    <option value="assessment">Assessment</option>
+                    <option value="exam">Exam</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="assessment-number">Assessment Number</label>
+                <input type="number" id="assessment-number" min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="marks-obtained">Marks Obtained</label>
+                <input type="number" id="marks-obtained" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="total-marks">Total Marks</label>
+                <input type="number" id="total-marks" min="1" required>
+            </div>
+
+            <button type="submit" class="primary-btn">Submit Marks</button>
+        </form>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+
+</html>

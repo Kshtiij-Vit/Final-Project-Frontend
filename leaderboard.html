@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+    <div class="leaderboard-container">
+        <header class="leaderboard-header">
+            <h1>Leaderboard</h1>
+            <div class="leaderboard-controls">
+                <input type="text" id="search-friend" placeholder="Search for friends...">
+                <button id="add-friend-btn" class="primary-btn">Add Friend</button>
+                <a href="dashboard.html" class="back-btn">Back to Dashboard</a>
+            </div>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="friends">Friends</button>
+            <button class="tab-btn" data-tab="class">Class</button>
+            <button class="tab-btn" data-tab="batch">Batch</button>
+            <button class="tab-btn" data-tab="program">Program</button>
+        </div>
+
+        <div class="leaderboard-content">
+            <div class="tab-content active" id="friends-tab">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Name</th>
+                            <th>Average Grade</th>
+                            <th>Points</th>
+                        </tr>
+                    </thead>
+                    <tbody id="friends-list">
+                        <!-- Dynamically populated -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Other tabs (class, batch, program) with similar structure -->
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>

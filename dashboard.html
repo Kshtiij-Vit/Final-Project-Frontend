@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>Student Dashboard</h1>
+            <div class="user-controls">
+                <span id="username-display">Welcome, User</span>
+                <a href="leaderboard.html" class="leaderboard-btn">Leaderboard</a>
+                <a href="index.html"><button id="logout-btn" class="logout-btn">Logout</button></a>
+            </div>
+        </header>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>Class Rank</h3>
+                <p id="class-rank">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Batch Rank</h3>
+                <p id="batch-rank">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Program Rank</h3>
+                <p id="program-rank">-</p>
+            </div>
+        </div>
+
+        <section class="grades-section">
+            <div class="section-header">
+                <h2>Current Grades</h2>
+                <a href="calculator.html" class="primary-btn">Add New Subject</a>
+            </div>
+            <div class="grades-container" id="grades-container">
+                <!-- Dynamically populated from calculator data -->
+            </div>
+        </section>
+
+        <section class="recent-section">
+            <h2>Recent Assessments</h2>
+            <div class="marks-container" id="recent-assessments">
+                <!-- Dynamically populated from calculator data -->
+            </div>
+        </section>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
