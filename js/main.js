@@ -373,7 +373,7 @@ function switchTab(tabId) {
     }
 }
 
-// ==================== HELPER FUNCTIONS ====================
+// HELPER FUNCTIONS
 function updateRankings() {
     userData.rankings = {
         class: generateRankingData(30, userData.currentUser.username),
