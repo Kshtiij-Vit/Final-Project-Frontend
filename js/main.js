@@ -11,9 +11,7 @@ const userData = {
     studentMarks: []
 };
 
-// Main initialization
 document.addEventListener('DOMContentLoaded', function() {
-    // Check which page we're on and handle accordingly
     const path = window.location.pathname;
     
     if (path.endsWith('index.html') || path === '/') {
@@ -25,11 +23,10 @@ document.addEventListener('DOMContentLoaded', function() {
     } else if (path.includes('leaderboard.html')) {
         handleLeaderboardPage();
     } else if (path.includes('calculator.html')) {
-        // Calculator-specific handling is in js/calculator.js
     }
 });
 
-// ==================== LOGIN PAGE ====================
+// LOGIN PAGE
 function handleLoginPage() {
     // Animation handling
     setTimeout(function() {
@@ -68,14 +65,12 @@ function handleLoginPage() {
             localStorage.setItem('loggedIn', 'true');
             localStorage.setItem('username', username);
             localStorage.setItem('userData', JSON.stringify(userData));
-            
-            // Redirect
             window.location.href = 'dashboard.html';
         });
     }
 }
 
-// ==================== DASHBOARD PAGE ====================
+// DASHBOARD PAGE 
 function handleDashboardPage() {
     // Check login first
     if (!localStorage.getItem('loggedIn')) {
@@ -105,27 +100,14 @@ function loadUserData() {
             const parsed = JSON.parse(savedData);
             Object.assign(userData, parsed);
             
-            // Initialize any missing arrays
             userData.subjects = userData.subjects || [];
             userData.studentMarks = userData.studentMarks || [];
         }
     } catch (e) {
         console.error("Error loading user data:", e);
-        // Initialize fresh data
         userData.subjects = [];
         userData.studentMarks = [];
     }
-    // const savedData = localStorage.getItem('userData');
-    // if (savedData) {
-    //     Object.assign(userData, JSON.parse(savedData));
-    // }
-    
-    // // Load marks from old system if exists
-    // const oldMarks = JSON.parse(localStorage.getItem('studentMarks') || '[]');
-    // if (oldMarks.length > 0) {
-    //     userData.studentMarks = oldMarks;
-    //     localStorage.removeItem('studentMarks');
-    // }
 }
 
 function setupDashboardUI() {
@@ -159,7 +141,6 @@ function setupDashboardUI() {
             window.location.href = 'leaderboard.html';
         });
     }
-    // Change this in setupDashboardUI():
     const addSubjectBtn = document.getElementById('add-subject-btn');
     if (addSubjectBtn) {
         addSubjectBtn.addEventListener('click', function() {
@@ -169,8 +150,7 @@ function setupDashboardUI() {
 }
 
 function loadDashboardContent() {
-    // Load marks data
-    // Ensure we have fresh data
+
     const savedData = localStorage.getItem('userData');
     if (savedData) {
         Object.assign(userData, JSON.parse(savedData));
@@ -249,7 +229,7 @@ function loadSubjectGrades() {
     });
 }
 
-// ==================== MARKS PAGE ====================
+//  MARKS PAGE 
 function handleMarksPage() {
     // Check login
     if (!localStorage.getItem('loggedIn')) {
@@ -292,7 +272,7 @@ function handleMarksPage() {
     }
 }
 
-// ==================== LEADERBOARD PAGE ====================
+// LEADERBOARD PAGE 
 function handleLeaderboardPage() {
     // Check login
     if (!localStorage.getItem('loggedIn')) {
@@ -337,12 +317,10 @@ function setupLeaderboardUI() {
 }
 
 function loadLeaderboardContent() {
-    // Generate sample rankings if none exist
     if (userData.rankings.class.length === 0) {
         updateRankings();
     }
     
-    // Load friends tab by default
     switchTab('friends');
 }
 
@@ -373,7 +351,11 @@ function switchTab(tabId) {
     }
 }
 
+<<<<<<< HEAD
 // HELPER FUNCTIONS
+=======
+// HELPER FUNCTIONS 
+>>>>>>> local_to_cloud/main
 function updateRankings() {
     userData.rankings = {
         class: generateRankingData(30, userData.currentUser.username),
@@ -434,14 +416,9 @@ function getGradeLetter(percentage) {
 function checkForNewSubjects() {
     const calculatorSubjects = JSON.parse(localStorage.getItem('calculatorSubjects')) || [];
     if (calculatorSubjects.length > 0) {
-        // Merge new subjects with existing ones
         userData.subjects = [...userData.subjects, ...calculatorSubjects];
         localStorage.setItem('userData', JSON.stringify(userData));
-        
-        // Clear the temporary storage
         localStorage.removeItem('calculatorSubjects');
-        
-        // Refresh the display
         loadSubjectGrades();
     }
 }
