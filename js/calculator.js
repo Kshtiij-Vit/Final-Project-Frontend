@@ -80,12 +80,10 @@ let subjects = [];
             };
 
             if (type === 'theory') {
-                // Add fixed theory assessments
                 subject.assessments.push({ type: 'CAT1', maxMarks: 50, weightage: 15, marks: null });
                 subject.assessments.push({ type: 'CAT2', maxMarks: 50, weightage: 15, marks: null });
                 subject.assessments.push({ type: 'FAT', maxMarks: 100, weightage: 40, marks: null });
 
-                // Add variable theory assessments
                 const assignmentCount = document.getElementById('theoryAssignment').checked ?
                     parseInt(document.getElementById('theoryAssignmentCount').value) : 0;
                 const digitalCount = document.getElementById('theoryDigital').checked ?
@@ -123,10 +121,7 @@ let subjects = [];
                     });
                 }
             } else { // lab
-                // Add fixed lab assessment
                 subject.assessments.push({ type: 'FAT', maxMarks: 100, weightage: 40, marks: null });
-
-                // Add variable lab assessments
                 const assignmentCount = document.getElementById('labAssignment').checked ?
                     parseInt(document.getElementById('labAssignmentCount').value) : 0;
                 const digitalCount = document.getElementById('labDigital').checked ?
@@ -168,9 +163,6 @@ let subjects = [];
             subjects.push(subject);
             renderSubjects();
             document.getElementById('subjectName').value = '';
-            // ... existing subject creation code ...
-
-            // Save to localStorage under userData
             const userData = JSON.parse(localStorage.getItem('userData')) || {
                 currentUser: JSON.parse(localStorage.getItem('userData')).currentUser,
                 subjects: [],
@@ -181,8 +173,6 @@ let subjects = [];
             
             userData.subjects.push(subject);
             localStorage.setItem('userData', JSON.stringify(userData));
-            
-            // Redirect back to dashboard
             //window.location.href = 'dashboard.html';
 
         }
@@ -311,10 +301,8 @@ let subjects = [];
             const subject = subjects.find(s => s.id === subjectId);
             if (!subject) return;
 
-            // Replace underscores with spaces for matching
             const formattedType = assessmentType.replace(/_/g, ' ');
 
-            // Find the exact assessment to update
             const assessment = subject.assessments.find(a => a.type === formattedType);
 
             if (assessment) {
@@ -384,30 +372,10 @@ let subjects = [];
             }
         }
 
-//         // Initialize the page
-//         document.addEventListener('DOMContentLoaded', function () {
-//             toggleAssessmentOptions();
-
-//             // Add event listeners for component checkboxes
-//             const theoryCheckboxes = document.querySelectorAll('input[name="theoryComponents"]');
-//             theoryCheckboxes.forEach(checkbox => {
-//                 checkbox.addEventListener('change', updateTheoryComponents);
-//             });
-
-//             const labCheckboxes = document.querySelectorAll('input[name="labComponents"]');
-//             labCheckboxes.forEach(checkbox => {
-//                 checkbox.addEventListener('change', updateLabComponents);
-//             });
-//         });
-// document.addEventListener('DOMContentLoaded', function() {
-//     // All your calculator code here
-// });
-
 function saveSubject(subjectId) {
     const subject = subjects.find(s => s.id === subjectId);
     if (!subject) return;
 
-    // Load current user data
     const userData = JSON.parse(localStorage.getItem('userData')) || {
         currentUser: JSON.parse(localStorage.getItem('userData')).currentUser,
         subjects: [],
@@ -416,41 +384,28 @@ function saveSubject(subjectId) {
         rankings: { class: [], batch: [], program: [] }
     };
 
-    // Find and update the subject in userData
     const existingSubjectIndex = userData.subjects.findIndex(s => s.id === subjectId);
     if (existingSubjectIndex >= 0) {
         // Update existing subject
         userData.subjects[existingSubjectIndex] = subject;
     } else {
-        // Add new subject
         userData.subjects.push(subject);
     }
 
-    // Save back to localStorage
     localStorage.setItem('userData', JSON.stringify(userData));
     
-    // Show confirmation
     alert('Marks saved successfully!');
-    
-    // Optional: Redirect to dashboard
-    // window.location.href = 'dashboard.html';
 }
 
 
-
-// Initialize the page - move this to the bottom of the file
 document.addEventListener('DOMContentLoaded', function() {
     toggleAssessmentOptions();
-    
-    // Load any existing subjects
     const savedData = localStorage.getItem('userData');
     if (savedData) {
         const userData = JSON.parse(savedData);
         subjects = userData.subjects || [];
         renderSubjects();
     }
-
-    // Add event listeners for component checkboxes
     const theoryCheckboxes = document.querySelectorAll('input[name="theoryComponents"]');
     theoryCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', updateTheoryComponents);
