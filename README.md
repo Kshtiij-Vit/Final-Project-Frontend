@@ -27,10 +27,6 @@ The project utilizes the following web technologies:
 - **HTML5**: For structuring the web pages.
 - **CSS3**: For styling the web pages, including complex animations and effects.
 - **JavaScript**: For adding interactivity to the web application.
-- **React**: For building the user interface.
-- **Node.js**: For the backend server.
-- **Express**: As the web application framework for Node.js.
-- **MongoDB**: For the database to store student marks and grades.
 
 ## Complex CSS Techniques
 
