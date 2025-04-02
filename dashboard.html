@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/calculator.css">
 </head>
 
 <body>
@@ -51,8 +52,22 @@
             </div>
         </section>
     </div>
+    <!-- Chatbot Container -->
+    <div id="chatbot-container" class="chatbot-container">
+        <div class="chatbot-header">
+            <h3>Grade Prediction Assistant</h3>
+            <button id="chatbot-toggle" class="chatbot-toggle">×</button>
+        </div>
+        <div id="chatbot-messages" class="chatbot-messages"></div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbot-input-field" placeholder="Ask about your grade chances...">
+            <button id="chatbot-send">Send</button>
+        </div>
+    </div>
+    <button id="chatbot-launch" class="chatbot-launch">Grade Help</button>
 
     <script src="js/main.js"></script>
+    <script src="js/calculator.js"></script>
 </body>
 
 </html>

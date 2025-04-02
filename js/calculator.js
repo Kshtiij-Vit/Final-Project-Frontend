@@ -397,6 +397,127 @@ function saveSubject(subjectId) {
     alert('Marks saved successfully!');
 }
 
+// Chatbot functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const chatbotContainer = document.getElementById('chatbot-container');
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    const chatbotLaunch = document.getElementById('chatbot-launch');
+    const chatbotMessages = document.getElementById('chatbot-messages');
+    const chatbotInput = document.getElementById('chatbot-input-field');
+    const chatbotSend = document.getElementById('chatbot-send');
+    
+    let isChatbotOpen = false;
+    
+    // Toggle chatbot visibility
+    chatbotToggle.addEventListener('click', toggleChatbot);
+    chatbotLaunch.addEventListener('click', toggleChatbot);
+    
+    // Send message when button clicked or Enter pressed
+    chatbotSend.addEventListener('click', sendMessage);
+    chatbotInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') sendMessage();
+    });
+    
+    function toggleChatbot() {
+        isChatbotOpen = !isChatbotOpen;
+        chatbotContainer.classList.toggle('open', isChatbotOpen);
+        chatbotLaunch.style.display = isChatbotOpen ? 'none' : 'block';
+        
+        if (isChatbotOpen && chatbotMessages.children.length === 0) {
+            addBotMessage("Hello! I can help predict your grade chances. Tell me your marks and class average, or ask about grading criteria.");
+        }
+    }
+    
+    function sendMessage() {
+        const message = chatbotInput.value.trim();
+        if (!message) return;
+        
+        addUserMessage(message);
+        chatbotInput.value = '';
+        
+        // Show typing indicator
+        const typing = document.createElement('div');
+        typing.className = 'typing-indicator bot-message';
+        typing.innerHTML = '<span></span><span></span><span></span>';
+        chatbotMessages.appendChild(typing);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        
+        // Process message and get response
+        setTimeout(() => {
+            chatbotMessages.removeChild(typing);
+            const response = generateResponse(message);
+            addBotMessage(response);
+        }, 1000);
+    }
+    
+    function addUserMessage(text) {
+        const message = document.createElement('div');
+        message.className = 'message user-message';
+        message.textContent = text;
+        chatbotMessages.appendChild(message);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+    
+    function addBotMessage(text) {
+        const message = document.createElement('div');
+        message.className = 'message bot-message';
+        message.textContent = text;
+        chatbotMessages.appendChild(message);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+    
+    function generateResponse(userMessage) {
+        // Check for grade prediction request
+        if (userMessage.toLowerCase().includes('grade') || 
+            userMessage.toLowerCase().includes('predict') || 
+            userMessage.toLowerCase().includes('chance')) {
+            
+            // Try to extract marks and average from message
+            const marksMatch = userMessage.match(/(\d+)\s*(marks|score|percent|%)/i);
+            const avgMatch = userMessage.match(/(\d+)\s*(average|class average|mean)/i);
+            
+            const marks = marksMatch ? parseInt(marksMatch[1]) : null;
+            const average = avgMatch ? parseInt(avgMatch[1]) : null;
+            
+            if (marks && average) {
+                // Simple prediction logic (can be enhanced)
+                const deviation = ((marks - average) / average) * 100;
+                
+                if (deviation > 20) return "Based on your marks being significantly above average, you have a very high chance of getting an S grade!";
+                if (deviation > 10) return "Your marks are well above average - good chance for an A grade, possibly S if the distribution favors it.";
+                if (deviation > 0) return "You're above average - likely looking at a B grade, with a chance for A if you're near the threshold.";
+                if (deviation > -10) return "You're around average - probably a C grade, but could move to B with small improvements.";
+                if (deviation > -20) return "Below average - likely a D grade. Focus on key areas to improve.";
+                return "Your marks are significantly below average - you might get an E or F. Please consult with your instructor.";
+            } else if (marks) {
+                return `With ${marks}%, you would typically get a ${predictGradeFromMarks(marks)} grade. For a more accurate prediction, please provide the class average.`;
+            } else {
+                return "To predict your grade, please tell me your marks and the class average (e.g., 'I have 85 marks with class average of 65').";
+            }
+        }
+        
+        // Default responses
+        const defaultResponses = [
+            "I can help predict your grade based on your marks and class average.",
+            "The grading system considers both absolute marks and relative performance.",
+            "For theory subjects, grades are based on standard deviation from the mean.",
+            "For lab subjects, grades follow absolute percentage thresholds.",
+            "You can ask me things like: 'What grade will I get with 75 marks and 60 average?'"
+        ];
+        
+        return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+    }
+    
+    function predictGradeFromMarks(marks) {
+        if (marks >= 90) return 'S';
+        if (marks >= 80) return 'A';
+        if (marks >= 70) return 'B';
+        if (marks >= 60) return 'C';
+        if (marks >= 55) return 'D';
+        if (marks >= 50) return 'E';
+        return 'F';
+    }
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     toggleAssessmentOptions();

@@ -351,11 +351,7 @@ function switchTab(tabId) {
     }
 }
 
-<<<<<<< HEAD
-// HELPER FUNCTIONS
-=======
 // HELPER FUNCTIONS 
->>>>>>> local_to_cloud/main
 function updateRankings() {
     userData.rankings = {
         class: generateRankingData(30, userData.currentUser.username),

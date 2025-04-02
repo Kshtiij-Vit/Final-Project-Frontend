@@ -80,7 +80,7 @@ body {
     translate: -50% -50%;
     z-index: -2;
     padding: 3px;
-    background-image: conic-gradient(from var(--angle), #205781, #4F959D, #98D2C0, #F6F8D5, #205781);
+    background-image: conic-gradient(from var(--angle), #1E90FF, #4682B4, #87CEEB, #00008B, #1E90FF);
     animation: 4s spin linear infinite;
     border-radius: 10px;
 }
@@ -116,13 +116,13 @@ body {
     left: 50%;
     translate: -50% -50%;
     z-index: -3;
-    background-image: conic-gradient(from var(--angle), #205781, #4F959D, #98D2C0, #F6F8D5, #205781);
+    background-image: conic-gradient(from var(--angle), #1E90FF, #4682B4, #87CEEB, #00008B, #1E90FF);
     animation: 4s spin linear infinite;
     border-radius: 10px;
     filter: blur(1.5rem);
-    opacity: 0.5;
+    opacity: 1;
     padding: 3px;
-}
+} 
 
 .login-container.show {
   display: block;
@@ -500,7 +500,7 @@ th {
 }
 
 .calculator-header {
-    display: flex;
+
     align-items: center;
     padding: 15px 20px;
     background-color: #f5f7fa;
@@ -510,10 +510,11 @@ th {
 .calculator-header h1 {
     margin: 0 auto;
     color: #0066ff;
+    margin-left: 40%;
 }
 
 .back-btn {
-    color: #0066ff;
+    color: #ffffff;
     text-decoration: none;
     font-weight: bold;
     padding: 5px 10px;
