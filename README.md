@@ -1,4 +1,4 @@
-# Final-Project-Frontend
+# VI compeTe
 
 Welcome to the Final-Project-Frontend repository! This project is a web application where students can input their marks, view their grades, compare them on a leaderboard, and see the probability of obtaining certain grades.
 
